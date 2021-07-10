@@ -31,15 +31,33 @@ function addBookDOM(){
     clearContainer();
     for(let book of library){
         let bookDiv = document.createElement('div');
+        bookDiv.classList.add('card');
         let name = document.createElement('p')
+        name.classList.add('name');
         name.textContent = book.getBookName();
         let author = document.createElement('p')
+        author.classList.add('textElement');
         author.textContent = book.getBookAuthor();
         let pages = document.createElement('p')
-        pages.textContent = book.getBookPages();
+        pages.classList.add('textElement');
+        pages.textContent = book.getBookPagesString();
+        let isRead = document.createElement('p');
+        isRead.classList.add('textElement');
+        isRead.textContent = book.getIsReadString();
+        let deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "X";
+        deleteBtn.classList.add('deleteBtn');
+        deleteBtn.addEventListener('click', ()=>{
+            let index = library.indexOf(book);
+            library.splice(index,1);
+            clearContainer();
+            addBookDOM();
+        });
+        bookDiv.appendChild(deleteBtn);
         bookDiv.appendChild(name);
         bookDiv.appendChild(author);
         bookDiv.appendChild(pages);
+        bookDiv.appendChild(isRead);
         container.appendChild(bookDiv);
     }    
 }
@@ -76,6 +94,15 @@ class Book {
     }
     getIsRead() {
         return this.isRead;
+    }
+
+    getBookPagesString(){
+        return `${this.bookPages} pages`;
+    }
+
+    getIsReadString(){
+        let response = this.isRead ? "You have read this book" : "You haven't read this book";
+        return response;
     }
 };
 
